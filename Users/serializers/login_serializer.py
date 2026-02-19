@@ -1,5 +1,7 @@
 from django.conf import settings
 from rest_framework import serializers
+from rest_framework_simplejwt.tokens import RefreshToken
+
 
 from Users.models import CustomUser
 
@@ -23,6 +25,8 @@ class LoginSerializer(serializers.ModelSerializer):
         if not email:
             raise serializers.ValidationError("El correo no puede estar vacío ")
 
+        user = CustomUser.objects.filter(email=email).first()#se hace la consulta a la BD
+
         if email:
             if "@" not in email:
                 raise serializers.ValidationError("Email o contraseña incorrecta: 1010")
@@ -31,13 +35,22 @@ class LoginSerializer(serializers.ModelSerializer):
             if any(ext in email for ext in settings.EXTENSIONES_BLACKLIST):#correos maleantes
                 raise serializers.ValidationError("Email o contraseña incorrecta: 1011")
 
-            user = CustomUser.objects.filter(email=email).first()#se hace la consulta a la BD
             mensaje_erorr= "Email o contraseña incorrectos"#variable que aporta seguridad al no revelar que le falta
             if not user:
                 raise serializers.ValidationError(mensaje_erorr)#El usuario no existe
             else:
                 if not user.check_password(password):
                     raise serializers.ValidationError(mensaje_erorr)#La contraseña no coincide
-
-        return attrs
-
+# --> exepct??
+        refresh = RefreshToken.for_user(user)
+        refresh["nombre"] = user.nombre
+        return {
+            "success": True,
+            "data": {
+                "nombre": user.nombre,
+                "email": user.email,
+                "role": user.role.nombre,
+                "refreshToken": str(refresh),
+                "token": str(refresh.access_token)
+            }
+        }

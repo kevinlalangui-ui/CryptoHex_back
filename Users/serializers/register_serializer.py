@@ -1,7 +1,7 @@
 from django.conf import settings
 from rest_framework import serializers
 
-from Users.models import CustomUser
+from Users.models import CustomUser,Roles
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -18,7 +18,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             "nombre","email", "password1", "password2"
              )
 
-    def validate_email1(self, email):#duplicar 2 veces ?
+    def validate_email(self, email):#duplicar 2 veces ?
         if "@" not in email:
             raise serializers.ValidationError("El email no es válido")
         if any(ext in email for ext in settings.EXTENSIONES_BLACKLIST):
@@ -47,6 +47,11 @@ class RegisterSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         password = validated_data.pop("password1")
         validated_data.pop("password2")
+
+        rol_por_defecto = Roles.objects.filter(default=True).first()
+        if not rol_por_defecto:
+            raise serializers.ValidationError("Error desconocido. No se pudo asignar el rol.")
+
 
         user = CustomUser.objects.create(
             email=validated_data["email"],
