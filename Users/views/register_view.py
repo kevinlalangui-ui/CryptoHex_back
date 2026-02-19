@@ -11,7 +11,7 @@ class RegisterView(APIView):
 
     # GET/POST/PUT/PATCH/DELETE
     def post(self, request):
-        # Nombre, Apellido, correo, contraseña, repetir correo
+        # Nombre, correo, contraseña, repetir contraseña
         serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid():
             try:
@@ -23,6 +23,7 @@ class RegisterView(APIView):
                 return Response({"success": False}, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 

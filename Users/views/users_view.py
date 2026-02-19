@@ -8,7 +8,7 @@ from Users.models import CustomUser
 
 class UsersView(APIView):
     permission_classes = [AllowAny]
-
+ #obtenemos todos los objetos en una lista guradamos nombre y email
     def get(self, request):
         users = CustomUser.objects.all()
 
@@ -18,7 +18,7 @@ class UsersView(APIView):
                 'nombre': user.nombre,
                 'email': user.email,
             })
-
+#en otro solo el nombre
         data2 = [{'nombre': u.nombre} for u in users]
 
         return Response({'data': data}, status=status.HTTP_200_OK)

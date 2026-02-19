@@ -3,7 +3,7 @@ import secrets
 from django.db import models
 
 
-# roles_djangoadmindsfhlksdnghlksdnfhklsd
+# definiendo roles en django
 class Roles(models.Model):
     nombre = models.CharField(max_length=30, unique=True, null=False, blank=False)
     slug = models.SlugField(max_length=50, unique=True, null=False, blank=False)
@@ -11,7 +11,7 @@ class Roles(models.Model):
 
     class Meta:
         db_table = 'roles'
-        ordering = ['nombre', 'is_active']
+        ordering = ('nombre', 'is_active')
         verbose_name = '2. Role'
         verbose_name_plural = '2. Roles'
 
@@ -26,10 +26,6 @@ class Roles(models.Model):
             self.slug = prov
 
         super().save(*args, **kwargs)
-
-    # Solo se llama al borrar un valor
-    def delete(self, *args, **kwargs):
-        pass
 
     def __str__(self):
         return f"[ROL: {self.nombre}]"

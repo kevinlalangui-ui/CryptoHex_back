@@ -3,10 +3,8 @@ from django.contrib.auth.admin import UserAdmin
 
 from Users.models import CustomUser
 
-class CustomUserAdmin(UserAdmin):
-    # inlines = (InfoPersonalInline,)
-    # model = CustomUser
 
+class CustomUserAdmin(UserAdmin):
     # Esto las columnas en la tabla de mi panel de admin.
     list_display = ('email', 'nombre', 'is_active', 'role__nombre', 'last_login')
 
@@ -24,23 +22,18 @@ class CustomUserAdmin(UserAdmin):
     ordering = ('-email',)
 
     fieldsets = (
-        ("Inicio de sesión", {'fields': ('email', 'password')}),
-        ("Información personal", {'fields': ('nombre')}),
-        ("Configuración", {'fields': ('is_active', 'is_staff', 'is_superuser', 'role')}),
+        ("Inicio de sesión", {'fields': ('email', 'password'),}),
+        ("Configuración", {'fields': ('is_active', 'is_staff', 'is_superuser', 'role'),}),
     )
 
     add_fieldsets = (
-        ("Información personal", {
-            'classes': ('wide',),
-            'fields': ('nombre', '')}#mirarr
-         ),
         ("Información de iniciar sesión", {
             'classes': ('wide',),
-            'fields': ('email1', 'email2', 'password')}
+            'fields': ('email1', 'password1', 'password2'),}
          ),
         ("Configuración", {
             'classes': ('wide',),
-            'fields': ('role', 'is_active', 'is_staff', 'is_superuser',)}
+            'fields': ('role', 'is_active', 'is_staff', 'is_superuser',),}
          ),
     )
 

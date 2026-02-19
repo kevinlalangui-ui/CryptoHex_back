@@ -1,13 +1,3 @@
-"""
-Django tiene por defecto:
-- username
-- email (opcional)
-- nombre
-- apellidos
-- is_active
-- is_staff
-- is_superuser
-"""
 from django.conf import settings
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
@@ -29,13 +19,14 @@ class CustomUserManager(BaseUserManager):
         if not password:
             raise ValueError("Contraseña no válida")
 
-        email = self.normalize_email(email)
+        email = self.normalize_email(email)  # estandariza formato de ccorreo
 
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
 
+    # eleva los permismos de un usuario, accesto total al panel de administración
     def create_superuser(self, email=None, password=None, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
@@ -45,12 +36,10 @@ class CustomUserManager(BaseUserManager):
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=100, unique=True, blank=False, null=False)
     nombre = models.CharField(max_length=50, null=False, blank=False)
-    # apellidos = models.CharField(max_length=50, null=False, blank=False)
     is_active = models.BooleanField(default=True, verbose_name="¿Está activo?",
                                     help_text="(Obligatorio si queremos que el usuario pueda acceder a su cuenta)")
 
     role = models.ForeignKey('Roles', on_delete=models.SET_NULL, blank=True, null=True)
-    personal_info = models.ForeignKey('InfoPersonal', on_delete=models.CASCADE, blank=True, null=True)
 
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
@@ -66,5 +55,4 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         verbose_name_plural = '1. Usuarios'
 
     def __str__(self):
-        # full_name = "SIN NOMBRE" if not self.nombre or self.apellidos else f"{self.nombre} {self.apellidos}"
         return f"{self.nombre} ({self.email})"

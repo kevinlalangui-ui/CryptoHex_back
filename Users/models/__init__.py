@@ -1,4 +1,4 @@
-from .users_model import CustomUser
 from .roles_model import Roles
-#se importan las clasess??????????????
+from .users_model import CustomUser
+#se importan las clases
 
