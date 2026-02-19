@@ -8,7 +8,7 @@ from Users.models import CustomUser
 
 class UsersView(APIView):
     permission_classes = [AllowAny]
- #obtenemos todos los objetos en una lista guradamos nombre y email
+ #obtenemos todos los objetos, en una lista guradamos nombre y email
     def get(self, request):
         users = CustomUser.objects.all()
 

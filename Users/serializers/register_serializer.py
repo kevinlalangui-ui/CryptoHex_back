@@ -18,9 +18,6 @@ class RegisterSerializer(serializers.ModelSerializer):
             "nombre","email", "password1", "password2"
              )
 
-    # validate -> Este metodo es la validación global
-    # validate_email, validate_nombre, validate_pais, validate_edad, ... -> Validar de forma individual y personalizada
-
     def validate_email1(self, email):#duplicar 2 veces ?
         if "@" not in email:
             raise serializers.ValidationError("El email no es válido")

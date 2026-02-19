@@ -6,8 +6,8 @@ from rest_framework.views import APIView
 from Users.serializers import RegisterSerializer
 
 class RegisterView(APIView):
-    permission_classes = [AllowAny]
-    #nombre
+    permission_classes = [AllowAny]#cualquiera pueda entrar
+
 
     # GET/POST/PUT/PATCH/DELETE
     def post(self, request):
