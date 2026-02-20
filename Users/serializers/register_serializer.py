@@ -29,8 +29,15 @@ class RegisterSerializer(serializers.ModelSerializer):
     def validate_password1(self, password):
         if not any(n.isdigit() for n in password):
             raise serializers.ValidationError("La contraseña debe de tener al menos un dígito")
+
+        # Verificamos si hay al menos una letra  mayúscula
+        if not any(char.isupper() for char in password):
+            raise serializers.ValidationError("El texto debe contener al menos una letra mayúscula")
+
         return password
+
     """
+    attrs es como un json 
         attrs = {
             "email": "",
             "nombre": "",
@@ -61,3 +68,10 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
+
+
+
+
+
+
+

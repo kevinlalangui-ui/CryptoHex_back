@@ -17,6 +17,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config("SECRET_KEY", "")
 DEBUG = config("DEBUG", default=True, cast=bool)
+CORS_ALLOW_ALL_ORIGINS = True
 
 if SECRET_KEY == "":
     raise KeyError("SECRET_KEY cannot be empty")
@@ -28,6 +29,7 @@ else:
 
     if len(ALLOWED_HOSTS) != 0:
         ALLOWED_HOSTS = ALLOWED_HOSTS.split(',')
+
 
 # ========================
 # == VARIABLES ==
@@ -146,6 +148,12 @@ STATIC_ROOT = ASSETS_DIR / 'collected_static'
 #en caso de subir archivos , se guardan en esa dirección
 MEDIA_URL = '/media/'
 MEDIA_ROOT = ASSETS_DIR / 'media'
+
+#de no poner lo de abajo django usara la configuracion interna por defecto
+AUTHENTICATION_BACKENDS = [
+    "Users.backend.EmailBackend",#aljoer eliminrar
+    "django.contrib.auth.backends.ModelBackend",
+]
 #permite numeros mas grandes y usa el modelo de usuario creado por nostros en lugar del por defecto
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'Users.CustomUser'

@@ -34,5 +34,7 @@ class Roles(models.Model):
         #se llma unicamente cunadod borramos
     def delete(self, *args, **kwargs):
         pass
+
+
     def __str__(self):
         return f"[ROL: {self.nombre}]"

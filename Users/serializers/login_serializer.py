@@ -6,11 +6,12 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from Users.models import CustomUser
 
 class LoginSerializer(serializers.ModelSerializer):
-    email = serializers.EmailField(max_length=50)
+    email = serializers.EmailField(max_length=50, allow_blank=False,allow_null=False,required=True)
     password = serializers.CharField(required=True, allow_blank=False, allow_null=False, min_length=5)
 
     class Meta:
         model = CustomUser
+        fields = ('email', 'password')
 
     def validate_password(self, password):
         #comprobaos si no hay ningun digito
@@ -21,6 +22,8 @@ class LoginSerializer(serializers.ModelSerializer):
     def validate(self, attrs):#attrs = clave-valor {"email": "kevin@gmail.com", "password": "aA123"}
         email = attrs.get('email')
         password = attrs.get('password')
+        print(email)
+        print(password)
 
         if not email:
             raise serializers.ValidationError("El correo no puede estar vacío ")

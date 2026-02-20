@@ -9,9 +9,9 @@ class RegisterView(APIView):
     permission_classes = [AllowAny]#cualquiera pueda entrar
 
 
-    # GET/POST/PUT/PATCH/DELETE
     def post(self, request):
         # Nombre, correo, contraseña, repetir contraseña
+        print(request.data)
         serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid():
             try:
